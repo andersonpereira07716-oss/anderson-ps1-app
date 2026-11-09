@@ -1,4 +1,3 @@
-// Gestão de Base de Dados Local Persistente (IndexedDB)
 export class StorageDB {
     constructor() {
         this.dbName = 'NEXA_DB';
@@ -38,6 +37,16 @@ export class StorageDB {
             const tx = this.db.transaction('logs', 'readonly');
             const store = tx.objectStore('logs');
             const req = store.count();
+            req.onsuccess = () => resolve(req.result);
+        });
+    }
+
+    async getAllLogs() {
+        if (!this.db) await this.init();
+        return new Promise((resolve) => {
+            const tx = this.db.transaction('logs', 'readonly');
+            const store = tx.objectStore('logs');
+            const req = store.getAll();
             req.onsuccess = () => resolve(req.result);
         });
     }

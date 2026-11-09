@@ -7,7 +7,7 @@
     <link rel="manifest" href="manifest.json">
     <style>
         :root { --bg: #0a0f1d; --card: #111928; --neon-cyan: #00f3ff; --neon-emerald: #00ff66; --neon-amber: #ffb700; --text: #e2e8f0; }
-        body { background: var(--bg); color: var(--text); font-family: monospace; margin: 0; padding: 16px; padding-bottom: 90px; }
+        body { background: var(--bg); color: var(--text); font-family: monospace; margin: 0; padding: 16px; padding-bottom: 95px; }
         header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--neon-cyan); padding-bottom: 12px; margin-bottom: 16px; }
         .logo-area { display: flex; align-items: center; gap: 10px; }
         img { width: 40px; height: 40px; border-radius: 8px; border: 1px solid var(--neon-cyan); }
@@ -36,31 +36,33 @@
             <img src="IAGenerativa.png" alt="Logo">
             <div>
                 <h1>ANDERSON_PS1</h1>
-                <span style="font-size: 0.75rem; color: #94a3b8;">NEXA Super Dashboard</span>
+                <span style="font-size: 0.75rem; color: #94a3b8;">NEXA Super Dashboard v3.0</span>
             </div>
         </div>
         <div id="net-badge" class="badge online">ONLINE</div>
     </header>
 
     <main id="app-container">
-        <!-- Módulo de Métricas Edge AI -->
+        <!-- Módulo Edge AI & Telemetria -->
         <div class="card">
-            <h3 style="margin-top:0; color:var(--neon-cyan);">// EDGE AI METRICS</h3>
+            <h3 style="margin-top:0; color:var(--neon-cyan);">// EDGE AI & TELEMETRY</h3>
             <div class="metrics-bar">
                 <span>LATÊNCIA: <strong id="val-latency" style="color:var(--neon-emerald)">12ms</strong></span>
-                <span>DB LOGS: <strong id="val-logs" style="color:var(--neon-cyan)">0</strong></span>
-                <span>SW: <strong style="color:var(--neon-emerald)">ATIVO</strong></span>
+                <span>LOGS DB: <strong id="val-logs" style="color:var(--neon-cyan)">0</strong></span>
+                <span>GPS: <strong id="val-gps" style="color:var(--neon-amber)">STANDBY</strong></span>
             </div>
+            <button id="btn-gps" style="border-color: var(--neon-amber); color: var(--neon-amber);">ATUALIZAR GPS LOCAL</button>
         </div>
 
-        <!-- Módulo Principal e Notificação -->
+        <!-- Controlo e Backup -->
         <div class="card">
-            <h3 style="margin-top:0; color:var(--neon-emerald);">// CONTROLO DE SISTEMA</h3>
-            <p style="font-size:0.85rem; color:#94a3b8;">Painel PWA modular otimizado com sincronização offline e logs persistentes em IndexedDB.</p>
+            <h3 style="margin-top:0; color:var(--neon-emerald);">// GESTÃO DE CUSTÓDIA</h3>
+            <p style="font-size:0.85rem; color:#94a3b8;">Sistema operativo PWA com persistência local de eventos e alertas do sistema.</p>
             <button id="btn-notify">TESTAR NOTIFICAÇÃO LOCAL</button>
+            <button id="btn-export" style="border-color: var(--neon-emerald); color: var(--neon-emerald);">EXPORTAR LOGS (JSON)</button>
         </div>
 
-        <!-- Central de Lançamento de Apps NEXA -->
+        <!-- Ecossistema NEXA -->
         <div class="card">
             <h3 style="margin-top:0; color:var(--neon-amber);">// ECOSSISTEMA NEXA</h3>
             <div class="grid">
@@ -71,7 +73,7 @@
     </main>
 
     <div id="cli-terminal">
-        <div id="cli-output">> Sistema NEXA v2.0 inicializado. Digite 'ajuda' para comandos.</div>
+        <div id="cli-output">> Sistema NEXA v3.0 ativo. Digite 'ajuda' para comandos.</div>
         <div class="cli-input-line">
             <span>root@nexa:~$</span>
             <input type="text" id="cli-input" placeholder="digite um comando...">

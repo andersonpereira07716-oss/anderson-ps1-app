@@ -19,9 +19,14 @@ export const UI = {
     updateLatency() {
         const el = document.getElementById('val-latency');
         if (el) {
-            const fakeMs = Math.floor(Math.random() * 15) + 8;
+            const fakeMs = Math.floor(Math.random() * 12) + 7;
             el.textContent = `${fakeMs}ms`;
         }
+    },
+
+    updateGPSStatus(text) {
+        const el = document.getElementById('val-gps');
+        if (el) el.textContent = text;
     },
 
     logCLI(text, isError = false) {
