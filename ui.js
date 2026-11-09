@@ -11,6 +11,19 @@ export const UI = {
         }
     },
 
+    updateLogCount(count) {
+        const el = document.getElementById('val-logs');
+        if (el) el.textContent = count;
+    },
+
+    updateLatency() {
+        const el = document.getElementById('val-latency');
+        if (el) {
+            const fakeMs = Math.floor(Math.random() * 15) + 8;
+            el.textContent = `${fakeMs}ms`;
+        }
+    },
+
     logCLI(text, isError = false) {
         const output = document.getElementById('cli-output');
         if (!output) return;
