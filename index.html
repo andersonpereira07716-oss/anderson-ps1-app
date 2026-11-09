@@ -6,8 +6,8 @@
     <title>ANDERSON_PS1 // NEXA Super Dashboard</title>
     <link rel="manifest" href="manifest.json">
     <style>
-        :root { --bg: #0a0f1d; --card: #111928; --neon-cyan: #00f3ff; --neon-emerald: #00ff66; --neon-amber: #ffb700; --text: #e2e8f0; }
-        body { background: var(--bg); color: var(--text); font-family: monospace; margin: 0; padding: 16px; padding-bottom: 95px; }
+        :root { --bg: #0a0f1d; --card: #111928; --neon-cyan: #00f3ff; --neon-emerald: #00ff66; --neon-amber: #ffb700; --neon-red: #ff4d4d; --text: #e2e8f0; }
+        body { background: var(--bg); color: var(--text); font-family: monospace; margin: 0; padding: 16px; padding-bottom: 100px; }
         header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--neon-cyan); padding-bottom: 12px; margin-bottom: 16px; }
         .logo-area { display: flex; align-items: center; gap: 10px; }
         img { width: 40px; height: 40px; border-radius: 8px; border: 1px solid var(--neon-cyan); }
@@ -21,7 +21,7 @@
         .app-btn:active { background: var(--neon-cyan); color: var(--bg); }
         button { background: transparent; color: var(--neon-cyan); border: 1px solid var(--neon-cyan); padding: 10px 16px; border-radius: 6px; font-family: monospace; font-weight: bold; cursor: pointer; width: 100%; margin-top: 8px; transition: 0.2s; }
         button:active { background: var(--neon-cyan); color: var(--bg); }
-        .metrics-bar { display: flex; justify-content: space-between; font-size: 0.75rem; color: #94a3b8; margin-top: 8px; }
+        .metrics-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.75rem; color: #94a3b8; margin-top: 8px; }
         /* CLI Terminal Overlay */
         #cli-terminal { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(5,8,15,0.95); border-top: 1px solid var(--neon-cyan); padding: 8px 12px; font-size: 0.85rem; z-index: 999; }
         #cli-output { max-height: 80px; overflow-y: auto; margin-bottom: 4px; color: var(--neon-emerald); }
@@ -36,44 +36,48 @@
             <img src="IAGenerativa.png" alt="Logo">
             <div>
                 <h1>ANDERSON_PS1</h1>
-                <span style="font-size: 0.75rem; color: #94a3b8;">NEXA Super Dashboard v3.0</span>
+                <span style="font-size: 0.75rem; color: #94a3b8;">NEXA Super Dashboard v4.0</span>
             </div>
         </div>
         <div id="net-badge" class="badge online">ONLINE</div>
     </header>
 
     <main id="app-container">
-        <!-- Módulo Edge AI & Telemetria -->
+        <!-- Telemetria Expandida & Bateria -->
         <div class="card">
-            <h3 style="margin-top:0; color:var(--neon-cyan);">// EDGE AI & TELEMETRY</h3>
+            <h3 style="margin-top:0; color:var(--neon-cyan);">// EDGE AI TELEMETRY v4</h3>
             <div class="metrics-bar">
-                <span>LATÊNCIA: <strong id="val-latency" style="color:var(--neon-emerald)">12ms</strong></span>
+                <span>LATÊNCIA: <strong id="val-latency" style="color:var(--neon-emerald)">10ms</strong></span>
                 <span>LOGS DB: <strong id="val-logs" style="color:var(--neon-cyan)">0</strong></span>
+                <span>BATERIA: <strong id="val-bat" style="color:var(--neon-emerald)">--%</strong></span>
                 <span>GPS: <strong id="val-gps" style="color:var(--neon-amber)">STANDBY</strong></span>
             </div>
             <button id="btn-gps" style="border-color: var(--neon-amber); color: var(--neon-amber);">ATUALIZAR GPS LOCAL</button>
         </div>
 
-        <!-- Controlo e Backup -->
+        <!-- Gravador de Áudio & Custódia -->
         <div class="card">
-            <h3 style="margin-top:0; color:var(--neon-emerald);">// GESTÃO DE CUSTÓDIA</h3>
-            <p style="font-size:0.85rem; color:#94a3b8;">Sistema operativo PWA com persistência local de eventos e alertas do sistema.</p>
+            <h3 style="margin-top:0; color:var(--neon-emerald);">// GRAVAÇÃO & CUSTÓDIA</h3>
+            <p style="font-size:0.85rem; color:#94a3b8;">Captura rápida de áudio e histórico armazenado localmente em IndexedDB.</p>
+            <button id="btn-rec" style="border-color: var(--neon-red); color: var(--neon-red);">INICIAR GRAVAÇÃO DE ÁUDIO</button>
             <button id="btn-notify">TESTAR NOTIFICAÇÃO LOCAL</button>
             <button id="btn-export" style="border-color: var(--neon-emerald); color: var(--neon-emerald);">EXPORTAR LOGS (JSON)</button>
         </div>
 
-        <!-- Ecossistema NEXA -->
+        <!-- Ecossistema NEXA Expandido -->
         <div class="card">
             <h3 style="margin-top:0; color:var(--neon-amber);">// ECOSSISTEMA NEXA</h3>
             <div class="grid">
                 <a href="https://guardia-maria-da-penha.vercel.app" target="_blank" class="app-btn">Guardiã Maria</a>
                 <a href="https://patos-pet-vacina.vercel.app" target="_blank" class="app-btn">Patos Pet Vacina</a>
+                <a href="https://jurissync-ai.vercel.app" target="_blank" class="app-btn">JurisSync AI</a>
+                <a href="https://anjo-de-rua-oficial.vercel.app" target="_blank" class="app-btn">Anjo de Rua</a>
             </div>
         </div>
     </main>
 
     <div id="cli-terminal">
-        <div id="cli-output">> Sistema NEXA v3.0 ativo. Digite 'ajuda' para comandos.</div>
+        <div id="cli-output">> Sistema NEXA v4.0 ativo. Digite 'ajuda' para comandos.</div>
         <div class="cli-input-line">
             <span>root@nexa:~$</span>
             <input type="text" id="cli-input" placeholder="digite um comando...">

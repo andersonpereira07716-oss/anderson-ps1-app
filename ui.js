@@ -16,10 +16,15 @@ export const UI = {
         if (el) el.textContent = count;
     },
 
+    updateBattery(level, charging) {
+        const el = document.getElementById('val-bat');
+        if (el) el.textContent = `${Math.round(level * 100)}%${charging ? ' ⚡' : ''}`;
+    },
+
     updateLatency() {
         const el = document.getElementById('val-latency');
         if (el) {
-            const fakeMs = Math.floor(Math.random() * 12) + 7;
+            const fakeMs = Math.floor(Math.random() * 10) + 6;
             el.textContent = `${fakeMs}ms`;
         }
     },
