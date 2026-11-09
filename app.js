@@ -7,6 +7,7 @@ class NexaApp {
         this.mediaRecorder = null;
         this.audioChunks = [];
         this.isRecording = false;
+        this.startTime = Date.now();
         this.init();
     }
 
@@ -18,7 +19,10 @@ class NexaApp {
         this.initActions();
         this.initCLI();
         
-        setInterval(() => UI.updateLatency(), 3000);
+        setInterval(() => {
+            const uptimeSecs = Math.floor((Date.now() - this.startTime) / 1000);
+            UI.updateUptime(uptimeSecs);
+        }, 1000);
     }
 
     async refreshLogCount() {
@@ -51,15 +55,29 @@ class NexaApp {
         const btnGPS = document.getElementById('btn-gps');
         const btnExport = document.getElementById('btn-export');
         const btnRec = document.getElementById('btn-rec');
+        const btnHash = document.getElementById('btn-hash');
 
         if ('Notification' in window && Notification.permission !== 'granted') {
             Notification.requestPermission();
         }
 
-        if (btnNotify) btnNotify.addEventListener('click', () => this.sendLocalNotification("NEXA Alerta", "Notificação v4.0 enviada!"));
+        if (btnNotify) btnNotify.addEventListener('click', () => this.sendLocalNotification("NEXA Alerta", "Notificação v5.0 enviada!"));
         if (btnGPS) btnGPS.addEventListener('click', () => this.fetchGPS());
         if (btnExport) btnExport.addEventListener('click', () => this.exportLogsJSON());
         if (btnRec) btnRec.addEventListener('click', () => this.toggleAudioRecording());
+        if (btnHash) btnHash.addEventListener('click', () => this.generateSessionHash());
+    }
+
+    async generateSessionHash() {
+        const rawData = `NEXA_SESSION_${Date.now()}_${Math.random()}`;
+        const msgBuffer = new TextEncoder().encode(rawData);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 16);
+        
+        UI.logCLI(`Hash SHA-256 gerado: ${hashHex}...`);
+        await this.db.addLog(`HASH: ${hashHex}`);
+        this.refreshLogCount();
     }
 
     async toggleAudioRecording() {
@@ -174,10 +192,13 @@ class NexaApp {
         switch (cmd) {
             case 'ajuda':
             case 'help':
-                UI.logCLI("Comandos: status, notify, gps, rec, export, db, limpar, reload");
+                UI.logCLI("Comandos: status, hash, gps, rec, export, db, limpar, reload");
                 break;
             case 'status':
-                UI.logCLI(`Rede: ${navigator.onLine ? 'ONLINE' : 'OFFLINE'} | PWA v4.0 Active`);
+                UI.logCLI(`Rede: ${navigator.onLine ? 'ONLINE' : 'OFFLINE'} | PWA v5.0 Active`);
+                break;
+            case 'hash':
+                this.generateSessionHash();
                 break;
             case 'rec':
             case 'audio':

@@ -21,11 +21,12 @@ export const UI = {
         if (el) el.textContent = `${Math.round(level * 100)}%${charging ? ' ⚡' : ''}`;
     },
 
-    updateLatency() {
-        const el = document.getElementById('val-latency');
+    updateUptime(seconds) {
+        const el = document.getElementById('val-uptime');
         if (el) {
-            const fakeMs = Math.floor(Math.random() * 10) + 6;
-            el.textContent = `${fakeMs}ms`;
+            const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
+            const secs = (seconds % 60).toString().padStart(2, '0');
+            el.textContent = `${mins}:${secs}`;
         }
     },
 
