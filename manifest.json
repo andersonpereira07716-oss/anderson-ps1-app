@@ -1,0 +1,16 @@
+{
+  "name": "ANDERSON_PS1 Nexa Dashboard",
+  "short_name": "NEXA_PS1",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#080b10",
+  "theme_color": "#00f0ff",
+  "icons": [
+    {
+      "src": "IAGenerativa.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
