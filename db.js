@@ -1,6 +1,7 @@
+// Gestão de Base de Dados Local Segura (IndexedDB) com Sanitização
 export class StorageDB {
     constructor() {
-        this.dbName = 'NEXA_DB';
+        this.dbName = 'NEXA_SECURE_DB';
         this.db = null;
     }
 
@@ -21,12 +22,19 @@ export class StorageDB {
         });
     }
 
+    sanitize(text) {
+        const element = document.createElement('div');
+        element.textContent = text;
+        return element.innerHTML;
+    }
+
     async addLog(message) {
         if (!this.db) await this.init();
+        const cleanMessage = this.sanitize(message);
         return new Promise((resolve) => {
             const tx = this.db.transaction('logs', 'readwrite');
             const store = tx.objectStore('logs');
-            store.add({ message, timestamp: new Date().toISOString() });
+            store.add({ message: cleanMessage, timestamp: new Date().toISOString() });
             tx.oncomplete = () => resolve(true);
         });
     }

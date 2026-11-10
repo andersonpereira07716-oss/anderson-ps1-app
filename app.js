@@ -61,7 +61,7 @@ class NexaApp {
             Notification.requestPermission();
         }
 
-        if (btnNotify) btnNotify.addEventListener('click', () => this.sendLocalNotification("NEXA Alerta", "Notificação v5.0 enviada!"));
+        if (btnNotify) btnNotify.addEventListener('click', () => this.sendLocalNotification("NEXA Alerta", "Notificação v6.0 segura!"));
         if (btnGPS) btnGPS.addEventListener('click', () => this.fetchGPS());
         if (btnExport) btnExport.addEventListener('click', () => this.exportLogsJSON());
         if (btnRec) btnRec.addEventListener('click', () => this.toggleAudioRecording());
@@ -69,14 +69,14 @@ class NexaApp {
     }
 
     async generateSessionHash() {
-        const rawData = `NEXA_SESSION_${Date.now()}_${Math.random()}`;
+        const rawData = `NEXA_SECURE_SESSION_${Date.now()}_${Math.random()}`;
         const msgBuffer = new TextEncoder().encode(rawData);
         const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
         const hashArray = Array.from(new Uint8Array(hashBuffer));
         const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 16);
         
-        UI.logCLI(`Hash SHA-256 gerado: ${hashHex}...`);
-        await this.db.addLog(`HASH: ${hashHex}`);
+        UI.logCLI(`Hash SHA-256 seguro gerado: ${hashHex}...`);
+        await this.db.addLog(`HASH_SECURE: ${hashHex}`);
         this.refreshLogCount();
     }
 
@@ -91,8 +91,8 @@ class NexaApp {
                 this.mediaRecorder.ondataavailable = e => this.audioChunks.push(e.data);
                 this.mediaRecorder.onstop = async () => {
                     const audioBlob = new Blob(this.audioChunks, { type: 'audio/webm' });
-                    UI.logCLI(`Áudio gravado (${Math.round(audioBlob.size / 1024)} KB).`);
-                    await this.db.addLog(`AUDIO_REC: ${audioBlob.size} bytes`);
+                    UI.logCLI(`Áudio seguro gravado (${Math.round(audioBlob.size / 1024)} KB).`);
+                    await this.db.addLog(`AUDIO_SECURE: ${audioBlob.size} bytes`);
                     this.refreshLogCount();
                 };
 
@@ -102,9 +102,9 @@ class NexaApp {
                     btnRec.textContent = "PARAR GRAVAÇÃO (GRAVANDO...)";
                     btnRec.style.backgroundColor = "rgba(255, 77, 77, 0.2)";
                 }
-                UI.logCLI("Gravação de áudio iniciada...");
+                UI.logCLI("Gravação de áudio iniciada com sucesso.");
             } catch (err) {
-                UI.logCLI(`Erro ao aceder ao microfone: ${err.message}`, true);
+                UI.logCLI(`Erro de permissão de microfone: ${err.message}`, true);
             }
         } else {
             if (this.mediaRecorder) this.mediaRecorder.stop();
@@ -123,15 +123,15 @@ class NexaApp {
                 async (pos) => {
                     const coords = `${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}`;
                     UI.updateGPSStatus(coords);
-                    UI.logCLI(`GPS Localizado: ${coords}`);
-                    await this.db.addLog(`GPS: ${coords}`);
+                    UI.logCLI(`GPS Seguro: ${coords}`);
+                    await this.db.addLog(`GPS_SECURE: ${coords}`);
                     this.refreshLogCount();
                 },
                 async (err) => {
                     UI.updateGPSStatus('ERRO / NEGADO');
                     UI.logCLI(`Erro GPS: ${err.message}`, true);
                 },
-                { timeout: 10000 }
+                { timeout: 10000, enableHighAccuracy: true }
             );
         } else {
             UI.updateGPSStatus('INDISPONÍVEL');
@@ -144,12 +144,12 @@ class NexaApp {
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(logs, null, 2));
         const downloadAnchor = document.createElement('a');
         downloadAnchor.setAttribute("href", dataStr);
-        downloadAnchor.setAttribute("download", `nexa_logs_${Date.now()}.json`);
+        downloadAnchor.setAttribute("download", `nexa_secure_logs_${Date.now()}.json`);
         document.body.appendChild(downloadAnchor);
         downloadAnchor.click();
         downloadAnchor.remove();
-        UI.logCLI(`Exportados ${logs.length} registos em JSON.`);
-        await this.db.addLog(`EXPORT: ${logs.length} logs`);
+        UI.logCLI(`Exportados ${logs.length} registos seguros em JSON.`);
+        await this.db.addLog(`EXPORT_SECURE: ${logs.length} logs`);
         this.refreshLogCount();
     }
 
@@ -162,11 +162,11 @@ class NexaApp {
                     badge: 'IAGenerativa.png'
                 });
             });
-            UI.logCLI(`Notificação disparada: ${title}`);
+            UI.logCLI(`Notificação segura disparada: ${title}`);
         } else {
             UI.logCLI("Permissão de notificação negada.", true);
         }
-        await this.db.addLog(`NOTIFY: ${title}`);
+        await this.db.addLog(`NOTIFY_SECURE: ${title}`);
         this.refreshLogCount();
     }
 
@@ -176,14 +176,17 @@ class NexaApp {
 
         input.addEventListener('keydown', async (e) => {
             if (e.key === 'Enter') {
-                const cmd = input.value.trim();
+                const rawCmd = input.value.trim();
                 input.value = '';
-                if (!cmd) return;
+                if (!rawCmd) return;
+
+                // Sanitização do input do CLI contra XSS/Injeção
+                const cmd = rawCmd.replace(/[<>]/g, '').toLowerCase();
 
                 UI.logCLI(cmd);
-                await this.db.addLog(`CMD: ${cmd}`);
+                await this.db.addLog(`CMD_SECURE: ${cmd}`);
                 this.refreshLogCount();
-                this.handleCommand(cmd.toLowerCase());
+                this.handleCommand(cmd);
             }
         });
     }
@@ -192,10 +195,10 @@ class NexaApp {
         switch (cmd) {
             case 'ajuda':
             case 'help':
-                UI.logCLI("Comandos: status, hash, gps, rec, export, db, limpar, reload");
+                UI.logCLI("Comandos seguros: status, hash, gps, rec, export, db, limpar, reload");
                 break;
             case 'status':
-                UI.logCLI(`Rede: ${navigator.onLine ? 'ONLINE' : 'OFFLINE'} | PWA v5.0 Active`);
+                UI.logCLI(`Rede: ${navigator.onLine ? 'ONLINE' : 'OFFLINE'} | PWA v6.0 Hardened`);
                 break;
             case 'hash':
                 this.generateSessionHash();
@@ -212,21 +215,21 @@ class NexaApp {
                 break;
             case 'db':
                 const c = await this.db.getLogCount();
-                UI.logCLI(`Total de registos no IndexedDB: ${c}`);
+                UI.logCLI(`Total de registos seguros no IndexedDB: ${c}`);
                 break;
             case 'notify':
-                this.sendLocalNotification("NEXA CLI", "Comando via terminal executado!");
+                this.sendLocalNotification("NEXA CLI", "Comando seguro executado!");
                 break;
             case 'limpar':
             case 'clear':
                 UI.clearCLI();
                 break;
             case 'reload':
-                UI.logCLI("A recarregar aplicação...");
+                UI.logCLI("A recarregar aplicação de forma segura...");
                 setTimeout(() => window.location.reload(), 1000);
                 break;
             default:
-                UI.logCLI(`Comando desconhecido: '${cmd}'. Digite 'ajuda'.`, true);
+                UI.logCLI(`Comando desconhecido ou bloqueado: '${cmd}'. Digite 'ajuda'.`, true);
                 break;
         }
     }

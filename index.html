@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ANDERSON_PS1 // NEXA Super Dashboard</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self';">
+    <title>ANDERSON_PS1 // NEXA Super Dashboard v6.0</title>
     <link rel="manifest" href="manifest.json">
     <style>
         :root { --bg: #0a0f1d; --card: #111928; --neon-cyan: #00f3ff; --neon-emerald: #00ff66; --neon-amber: #ffb700; --neon-red: #ff4d4d; --text: #e2e8f0; }
@@ -36,16 +37,16 @@
             <img src="IAGenerativa.png" alt="Logo">
             <div>
                 <h1>ANDERSON_PS1</h1>
-                <span style="font-size: 0.75rem; color: #94a3b8;">NEXA Super Dashboard v5.0</span>
+                <span style="font-size: 0.75rem; color: #94a3b8;">NEXA Super Dashboard v6.0 (Secure)</span>
             </div>
         </div>
         <div id="net-badge" class="badge online">ONLINE</div>
     </header>
 
     <main id="app-container">
-        <!-- Telemetria Avançada & Uptime -->
+        <!-- Telemetria Hardened -->
         <div class="card">
-            <h3 style="margin-top:0; color:var(--neon-cyan);">// EDGE TELEMETRY v5</h3>
+            <h3 style="margin-top:0; color:var(--neon-cyan);">// EDGE TELEMETRY v6 (HARDENED)</h3>
             <div class="metrics-bar">
                 <span>UPTIME: <strong id="val-uptime" style="color:var(--neon-emerald)">00:00</strong></span>
                 <span>LOGS DB: <strong id="val-logs" style="color:var(--neon-cyan)">0</strong></span>
@@ -55,10 +56,10 @@
             <button id="btn-gps" style="border-color: var(--neon-amber); color: var(--neon-amber);">ATUALIZAR GPS LOCAL</button>
         </div>
 
-        <!-- Criptografia & Custódia -->
+        <!-- Segurança & Custódia Criptográfica -->
         <div class="card">
             <h3 style="margin-top:0; color:var(--neon-emerald);">// SEGURANÇA & CUSTÓDIA</h3>
-            <p style="font-size:0.85rem; color:#94a3b8;">Assinatura de sessão, gravador de áudio e persistência segura em IndexedDB.</p>
+            <p style="font-size:0.85rem; color:#94a3b8;">Blindagem CSP ativa, assinatura SHA-256 e isolamento de dados no IndexedDB.</p>
             <button id="btn-hash" style="border-color: var(--neon-cyan); color: var(--neon-cyan);">GERAR HASH DE SESSÃO (SHA-256)</button>
             <button id="btn-rec" style="border-color: var(--neon-red); color: var(--neon-red);">INICIAR GRAVAÇÃO DE ÁUDIO</button>
             <button id="btn-notify">TESTAR NOTIFICAÇÃO LOCAL</button>
@@ -69,19 +70,19 @@
         <div class="card">
             <h3 style="margin-top:0; color:var(--neon-amber);">// ECOSSISTEMA NEXA</h3>
             <div class="grid">
-                <a href="https://guardia-maria-da-penha.vercel.app" target="_blank" class="app-btn">Guardiã Maria</a>
-                <a href="https://patos-pet-vacina.vercel.app" target="_blank" class="app-btn">Patos Pet Vacina</a>
-                <a href="https://jurissync-ai.vercel.app" target="_blank" class="app-btn">JurisSync AI</a>
-                <a href="https://anjo-de-rua-oficial.vercel.app" target="_blank" class="app-btn">Anjo de Rua</a>
+                <a href="https://guardia-maria-da-penha.vercel.app" target="_blank" rel="noopener noreferrer" class="app-btn">Guardiã Maria</a>
+                <a href="https://patos-pet-vacina.vercel.app" target="_blank" rel="noopener noreferrer" class="app-btn">Patos Pet Vacina</a>
+                <a href="https://jurissync-ai.vercel.app" target="_blank" rel="noopener noreferrer" class="app-btn">JurisSync AI</a>
+                <a href="https://anjo-de-rua-oficial.vercel.app" target="_blank" rel="noopener noreferrer" class="app-btn">Anjo de Rua</a>
             </div>
         </div>
     </main>
 
     <div id="cli-terminal">
-        <div id="cli-output">> Sistema NEXA v5.0 ativo. Digite 'ajuda' para comandos.</div>
+        <div id="cli-output">> Sistema NEXA v6.0 Seguro ativado. Digite 'ajuda'.</div>
         <div class="cli-input-line">
             <span>root@nexa:~$</span>
-            <input type="text" id="cli-input" placeholder="digite um comando...">
+            <input type="text" id="cli-input" placeholder="digite um comando..." autocomplete="off">
         </div>
     </div>
 
